@@ -12,16 +12,24 @@ export default function Command() {
   const [accountError, setAccountError] = useState<string | undefined>();
   const [amountError, setAmountError] = useState<string | undefined>();
 
+  function dropError(field: "account" | "amount") {
+    if (field === "account" && accountError) setAccountError(undefined);
+    if (field === "amount" && amountError) setAmountError(undefined);
+  }
+
   const handleSubmit = (values: FormValues) => {
     let hasError = false;
 
     if (!values.account) {
       setAccountError("Account number is required");
       hasError = true;
+    } else if (!/^\d+$/.test(values.account)) {
+      setAccountError("Digits only");
+      hasError = true;
     }
 
     if (values.amount && isNaN(Number(values.amount))) {
-      setAmountError("Amount must be a valid number");
+      setAmountError("Must be a valid number");
       hasError = true;
     }
 
@@ -30,16 +38,8 @@ export default function Command() {
     const memoEncoded = encodeURIComponent(values.memo || "");
     const qrUrl = `https://img.vietqr.io/image/${selectedBankBin}-${values.account}-${values.template}.png?amount=${values.amount || 0}&addInfo=${memoEncoded}`;
 
-    // Đẩy sang Component đã được tách riêng
     push(<QRResult url={qrUrl} />);
   };
-
-  // Hàm xóa lỗi khi người dùng bắt đầu nhập liệu
-  function dropAccountErrorIfNeeded() {
-    if (accountError && accountError.length > 0) {
-      setAccountError(undefined);
-    }
-  }
 
   return (
     <Form
@@ -61,23 +61,19 @@ export default function Command() {
         title="Account Number"
         placeholder="Enter account number"
         error={accountError}
-        onChange={dropAccountErrorIfNeeded}
+        onChange={() => dropError("account")}
         onBlur={(event) => {
-          if (event.target.value?.length === 0) {
-            setAccountError("The field cannot be empty");
-          } else {
-            dropAccountErrorIfNeeded();
-          }
+          const value = event.target.value;
+          if (!value) setAccountError("Field cannot be empty");
+          else if (!/^\d+$/.test(value)) setAccountError("Digits only");
         }}
       />
       <Form.TextField
         id="amount"
         title="Amount"
-        placeholder="Optional"
+        placeholder="Optional (e.g. 10000)"
         error={amountError}
-        onChange={() => {
-          if (amountError) setAmountError(undefined);
-        }}
+        onChange={() => dropError("amount")}
       />
       <Form.TextArea id="memo" title="Description" placeholder="Optional" />
 
