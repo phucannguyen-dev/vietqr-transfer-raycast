@@ -3,7 +3,7 @@
   "name": "vietqr-transfer",
   "title": "VietQR Transfer Generator",
   "description": "Quickly generate VietQR payment codes for Vietnamese banks with customizable templates, amounts, and descriptions.",
-  "icon": "extension-icon.svg",
+  "icon": "extension-icon.png",
   "author": "annguyen",
   "platforms": [
     "macOS",
@@ -16,7 +16,7 @@
   "commands": [
     {
       "name": "transfer-qr-generator",
-      "title": "Generate Payment QR",
+      "title": "Generate Transfer QR",
       "description": "Create a bank transfer QR code instantly",
       "icon": "extension-icon.png",
       "mode": "view",

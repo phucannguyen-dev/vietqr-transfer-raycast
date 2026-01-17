@@ -56,10 +56,10 @@ export default function Command() {
         ))}
       </Form.Dropdown>
 
-      <Form.TextField 
-        id="account" 
-        title="Account Number" 
-        placeholder="Enter account number" 
+      <Form.TextField
+        id="account"
+        title="Account Number"
+        placeholder="Enter account number"
         error={accountError}
         onChange={dropAccountErrorIfNeeded}
         onBlur={(event) => {
@@ -70,10 +70,10 @@ export default function Command() {
           }
         }}
       />
-      <Form.TextField 
-        id="amount" 
-        title="Amount" 
-        placeholder="Optional" 
+      <Form.TextField
+        id="amount"
+        title="Amount"
+        placeholder="Optional"
         error={amountError}
         onChange={() => {
           if (amountError) setAmountError(undefined);
